@@ -11,7 +11,7 @@
 //  f[i][0] = max(f[i - 1][0], f[i - 1][1]);    房子i - 2偷 / 不偷
 //  f[i][1] = f[i - 1][0] + a[i - 1];           房子i - 2必须不能偷
 
-
+//优化：最后一个房子 不偷         偷（前i - 2栋房子 + 最后一栋房子的金币值）
 //  f[i] = max(f[i - 1], f[i - 2] + a[i - 1]);
 //  初始值：
 //  f[0] = 0;
@@ -22,6 +22,27 @@
 #include <vector>
 #include <algorithm>
 using namespace std;
+
+//滚动数组做法
+long houseRobber2(vector<int>& A){
+    int n = A.size();
+    if(n == 0){
+        return 0;
+    }
+    if(n == 1){
+        return A[0];
+    }
+    long old, now;
+    old = A[0];
+    now = max(A[0], A[1]);
+    for(int i = 3;i <= n;++i){
+        long t = max(now, old + A[i - 1]);
+        old = now;
+        now = t;
+    }
+    return now;
+}
+
 
 long houseRobber(vector<int>& A){
     int n = A.size();
